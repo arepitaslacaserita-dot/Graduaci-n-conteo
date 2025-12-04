@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Graduación 11° – 2025</title>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #141722;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+    color: white;
+    scroll-behavior: smooth;
+    position: relative;
+  }
+
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ================== TÍTULO ================== */
+  .curved-title {
+    width: 520px;
+    height: 250px;
+    opacity: 0;
+    animation: dropTitle 1s forwards 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  .curved-title svg text {
+    fill: #f4d27a;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    filter: drop-shadow(0 0 10px rgba(255,220,120,0.9));
+  }
+
+  @keyframes dropTitle {
+    0% { transform: translateY(-200px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* =================== CENTRO =================== */
+  .center-wrapper {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* ⭐ CÍRCULO REPARADO (REGRESÓ AL ORIGINAL) ⭐ */
+  .glow-circle {
+    width: 260px;
+    height: 260px;
+    background: white;
+    border-radius: 50%;
+    box-shadow:
+      0 0 40px rgba(255,255,255,1),
+      0 0 80px rgba(255,215,100,0.95),
+      0 0 120px rgba(255,215,100,0.7),
+      inset 0 0 30px rgba(255,215,100,0.7);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    animation: popCircle 1s forwards 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+
+  /* ⭐ BIRRETE RESTAURADO (IMAGEN ORIGINAL) ⭐ */
+  .glow-circle img {
+    width: 165px;
+    height: auto;
+    animation: softPulse 2.2s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px white);
+  }
+
+  @keyframes popCircle {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .label {
+    margin-top: 25px;
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+
+  /* ============== CONTADOR ================== */
+  .timer-box {
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: white;
+    border-radius: 8px;
+    color: black;
+    font-size: 26px;
+    font-weight: 700;
+    display: inline-block;
+    border: 3px solid #ffffffd0;
+    box-shadow: 0 0 14px rgba(255,255,255,0.35);
+    line-height: 1;
+    white-space: nowrap;
+    animation: fadeIn 1s forwards 1.5s;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* =================== TEXTO =================== */
+  #final-text {
+    width: 90%;
+    max-width: 550px;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 18px;
+    line-height: 1.45;
+    opacity: 0;
+  }
+
+  #final-text span {
+    opacity: 0;
+    display: inline-block;
+    background: linear-gradient(90deg, #f4d27a, #ffffff, #f4d27a);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 6px rgba(255,220,120,0.6));
+    animation: goldShine 2.5s infinite linear, fadeLetter 0.05s forwards;
+  }
+
+  @keyframes goldShine {
+    0% { background-position: 0%; }
+    100% { background-position: 200%; }
+  }
+
+  @keyframes fadeLetter {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes softPulse {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.07); }
+    100% { transform: scale(1); }
+  }
+
+  /* =================== CONFETI =================== */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f4d27a;
+    top: -10px;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 1; /* ⬅ pasa atrás de todo */
+    border-radius: 3px;
+    animation: fallConfetti linear infinite;
+  }
+
+  @keyframes fallConfetti {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  @media (max-width:420px){
+    .timer-box { font-size: 20px; padding: 8px 12px; min-width: 160px; }
+    .glow-circle { width: 200px; height: 200px; }
+    .glow-circle img { width: 120px; }
+    .curved-title svg text { font-size: 28px; letter-spacing: 3px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+  <div class="curved-title">
+    <svg viewBox="0 0 500 500">
+      <defs>
+        <path id="curve" d="M 50 300 A 200 200 0 0 1 450 300" />
+      </defs>
+      <text width="500">
+        <textPath xlink:href="#curve" startOffset="50%" text-anchor="middle">
+          GRADUACIÓN 11° – 2025
+        </textPath>
+      </text>
+    </svg>
+  </div>
+
+  <div class="center-wrapper">
+    <div class="glow-circle">
+      <!-- imagen EXACTA que tenías antes -->
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBM3B_hkfAwV4UZoI-Y2tVjCXccMABbnPDDP3f29yOjw&s=10" alt="birrete">
+    </div>
+
+    <div class="label">FALTA:</div>
+    <div class="timer-box" id="countdown"></div>
+  </div>
+
+  <div id="final-text"></div>
+</div>
+
+<script>
+// TIMER
+const targetDate = new Date();
+targetDate.setDate(targetDate.getDate() + 1);
+targetDate.setHours(8, 0, 0, 0);
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+  if (diff <= 0) {
+    document.getElementById("countdown").innerHTML = "¡El momento ha llegado!";
+    return;
+  }
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById("countdown").innerHTML =
+    `${h} Hrs  ${m} Min  ${s} Seg`;
+}
+setInterval(updateCountdown, 1000);
+
+// TEXTO FINAL
+const finalMessage = 
+"Solo faltan horas para graduarnos, después de un año conviviendo juntos, compartiendo experiencias, les agradezco por su compañía y apoyo; les deseo lo mejor mañana. - Fernando™";
+
+function showFinalMessage() {
+  const box = document.getElementById("final-text");
+  box.innerHTML = "";
+  [...finalMessage].forEach((ch, i) => {
+    const span = document.createElement("span");
+    span.innerHTML = ch === " " ? "&nbsp;" : ch;
+    span.style.animationDelay = `${i*0.04}s`;
+    box.appendChild(span);
+  });
+  box.style.opacity = "1";
+}
+window.addEventListener("load", () => setTimeout(showFinalMessage, 1500));
+
+// CONFETI
+function createConfetti() {
+  for (let i = 0; i < 30; i++) {
+    const conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.style.left = Math.random() * 100 + 'vw';
+    conf.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 70%)`;
+    conf.style.width = conf.style.height = Math.random() * 8 + 4 + 'px';
+    conf.style.animationDuration = Math.random()*3+3 + 's';
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 5000);
+  }
+}
+setInterval(createConfetti, 500);
+</script>
+
+</body>
+</html>
