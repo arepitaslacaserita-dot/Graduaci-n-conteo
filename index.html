@@ -210,7 +210,7 @@
 </div>
 
 <script>
-// TIMER
+// TIMER CORREGIDO
 const targetDate = new Date();
 targetDate.setDate(targetDate.getDate() + 1);
 targetDate.setHours(8, 0, 0, 0);
@@ -222,9 +222,11 @@ function updateCountdown() {
     document.getElementById("countdown").innerHTML = "¡El momento ha llegado!";
     return;
   }
-  const h = Math.floor(diff / 3600000);
+
+  const h = Math.floor((diff % (24*3600000)) / 3600000); // horas restantes del día
   const m = Math.floor((diff % 3600000) / 60000);
   const s = Math.floor((diff % 60000) / 1000);
+
   document.getElementById("countdown").innerHTML =
     `${h} Hrs  ${m} Min  ${s} Seg`;
 }
