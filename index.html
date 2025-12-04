@@ -54,7 +54,6 @@
     margin-top: 20px;
   }
 
-  /* ⭐ CÍRCULO REPARADO (REGRESÓ AL ORIGINAL) ⭐ */
   .glow-circle {
     width: 260px;
     height: 260px;
@@ -73,7 +72,6 @@
     animation: popCircle 1s forwards 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
-  /* ⭐ BIRRETE RESTAURADO (IMAGEN ORIGINAL) ⭐ */
   .glow-circle img {
     width: 165px;
     height: auto;
@@ -123,8 +121,13 @@
     text-align: center;
     margin-top: 40px;
     font-size: 18px;
-    line-height: 1.45;
+    line-height: 1.48;
     opacity: 0;
+    white-space: normal;
+    word-spacing: 2px;
+    letter-spacing: 0.2px;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   #final-text span {
@@ -135,7 +138,8 @@
     -webkit-background-clip: text;
     color: transparent;
     filter: drop-shadow(0 0 6px rgba(255,220,120,0.6));
-    animation: goldShine 2.5s infinite linear, fadeLetter 0.05s forwards;
+    animation: goldShine 2.5s infinite linear, fadeWord 0.1s forwards;
+    margin-right: 4px; /* espacio entre palabras */
   }
 
   @keyframes goldShine {
@@ -143,7 +147,7 @@
     100% { background-position: 200%; }
   }
 
-  @keyframes fadeLetter {
+  @keyframes fadeWord {
     from { opacity: 0; transform: translateY(-10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
@@ -159,11 +163,10 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #f4d27a;
     top: -10px;
     opacity: 0.9;
     pointer-events: none;
-    z-index: 1; /* ⬅ pasa atrás de todo */
+    z-index: -1;
     border-radius: 3px;
     animation: fallConfetti linear infinite;
   }
@@ -173,12 +176,6 @@
     100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
 
-  @media (max-width:420px){
-    .timer-box { font-size: 20px; padding: 8px 12px; min-width: 160px; }
-    .glow-circle { width: 200px; height: 200px; }
-    .glow-circle img { width: 120px; }
-    .curved-title svg text { font-size: 28px; letter-spacing: 3px; }
-  }
 </style>
 </head>
 
@@ -201,7 +198,6 @@
 
   <div class="center-wrapper">
     <div class="glow-circle">
-      <!-- imagen EXACTA que tenías antes -->
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBM3B_hkfAwV4UZoI-Y2tVjCXccMABbnPDDP3f29yOjw&s=10" alt="birrete">
     </div>
 
@@ -210,6 +206,7 @@
   </div>
 
   <div id="final-text"></div>
+
 </div>
 
 <script>
@@ -233,22 +230,39 @@ function updateCountdown() {
 }
 setInterval(updateCountdown, 1000);
 
-// TEXTO FINAL
+// TEXTO FINAL (animación por palabra)
 const finalMessage = 
-"Solo faltan horas para graduarnos, después de un año conviviendo juntos, compartiendo experiencias, les agradezco por su compañía y apoyo; les deseo lo mejor mañana. - Fernando™";
+"Solo faltan horas para graduarnos, después de un año conviviendo juntos, compartiendo experiencias, les agradezco por su compañía y apoyo; les deseo lo mejor mañana.<br><br>- Fernando™";
 
 function showFinalMessage() {
   const box = document.getElementById("final-text");
   box.innerHTML = "";
-  [...finalMessage].forEach((ch, i) => {
-    const span = document.createElement("span");
-    span.innerHTML = ch === " " ? "&nbsp;" : ch;
-    span.style.animationDelay = `${i*0.04}s`;
-    box.appendChild(span);
+
+  const sections = finalMessage.split("<br><br>");
+  let index = 0;
+
+  sections.forEach((p, sectionIndex) => {
+    p.split(" ").forEach(word => {
+      const span = document.createElement("span");
+      span.textContent = word;
+      span.style.animationDelay = `${index * 0.08}s`;
+      box.appendChild(span);
+      box.append(" "); // espacio entre palabras
+      index++;
+    });
+
+    if (sectionIndex < sections.length - 1) {
+      box.appendChild(document.createElement("br"));
+      box.appendChild(document.createElement("br"));
+    }
   });
+
   box.style.opacity = "1";
 }
-window.addEventListener("load", () => setTimeout(showFinalMessage, 1500));
+
+window.addEventListener("load", () =>
+  setTimeout(showFinalMessage, 1500)
+);
 
 // CONFETI
 function createConfetti() {
