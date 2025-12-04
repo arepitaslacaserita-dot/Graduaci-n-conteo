@@ -216,7 +216,11 @@ targetDate.setDate(targetDate.getDate() + 1);
 targetDate.setHours(8, 0, 0, 0);
 
 let countdownFinished = false;
-let startTime = 0;
+
+// Revisar si ya hay hora de inicio guardada
+let startTime = localStorage.getItem('eventStartTime') 
+                ? parseInt(localStorage.getItem('eventStartTime')) 
+                : 0;
 
 function updateCountdown() {
   const now = new Date().getTime();
@@ -230,7 +234,11 @@ function updateCountdown() {
     // CAMBIO DE ESTADO
     label.textContent = "En curso...";
     countdownFinished = true;
-    startTime = 0;
+
+    // Guardar hora de inicio real si no existe
+    if (!localStorage.getItem('eventStartTimeActual')) {
+      localStorage.setItem('eventStartTimeActual', now);
+    }
 
     // ACTUALIZAR MENSAJE FINAL
     finalText.innerHTML = "Comenzamos...<br>Evento en curso, falta poco....";
@@ -247,10 +255,12 @@ function updateCountdown() {
     timerBox.textContent = `${h} Hrs  ${m} Min  ${s} Seg`;
   } else {
     // RELOJ hacia adelante HH:MM:SS
-    startTime++;
-    const hours = Math.floor(startTime / 3600);
-    const minutes = Math.floor((startTime % 3600) / 60);
-    const seconds = startTime % 60;
+    const elapsed = Math.floor((now - parseInt(localStorage.getItem('eventStartTimeActual'))) / 1000);
+
+    const hours = Math.floor(elapsed / 3600);
+    const minutes = Math.floor((elapsed % 3600) / 60);
+    const seconds = elapsed % 60;
+
     timerBox.textContent = 
       `${hours.toString().padStart(2,'0')}:` +
       `${minutes.toString().padStart(2,'0')}:` +
