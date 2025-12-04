@@ -139,7 +139,7 @@
     color: transparent;
     filter: drop-shadow(0 0 6px rgba(255,220,120,0.6));
     animation: goldShine 2.5s infinite linear, fadeWord 0.1s forwards;
-    margin-right: 4px; /* espacio entre palabras */
+    margin-right: 4px;
   }
 
   @keyframes goldShine {
@@ -210,29 +210,56 @@
 </div>
 
 <script>
-// TIMER CORREGIDO
+// TIMER + RELOJ HH:MM:SS + MENSAJE FINAL ACTUALIZADO
 const targetDate = new Date();
 targetDate.setDate(targetDate.getDate() + 1);
 targetDate.setHours(8, 0, 0, 0);
 
+let countdownFinished = false;
+let startTime = 0;
+
 function updateCountdown() {
   const now = new Date().getTime();
   const diff = targetDate - now;
-  if (diff <= 0) {
-    document.getElementById("countdown").innerHTML = "¡El momento ha llegado!";
+
+  const label = document.querySelector('.label');
+  const timerBox = document.getElementById("countdown");
+  const finalText = document.getElementById("final-text");
+
+  if (!countdownFinished && diff <= 0) {
+    // CAMBIO DE ESTADO
+    label.textContent = "En curso...";
+    countdownFinished = true;
+    startTime = 0;
+
+    // ACTUALIZAR MENSAJE FINAL
+    finalText.innerHTML = "Comenzamos...<br>Evento en curso, falta poco....";
+
+    timerBox.textContent = "00:00:00"; // reloj HH:MM:SS
     return;
   }
 
-  const h = Math.floor((diff % (24*3600000)) / 3600000); // horas restantes del día
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-
-  document.getElementById("countdown").innerHTML =
-    `${h} Hrs  ${m} Min  ${s} Seg`;
+  if (!countdownFinished) {
+    // CONTADOR REGRESIVO normal
+    const h = Math.floor((diff % (24*3600000)) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    timerBox.textContent = `${h} Hrs  ${m} Min  ${s} Seg`;
+  } else {
+    // RELOJ hacia adelante HH:MM:SS
+    startTime++;
+    const hours = Math.floor(startTime / 3600);
+    const minutes = Math.floor((startTime % 3600) / 60);
+    const seconds = startTime % 60;
+    timerBox.textContent = 
+      `${hours.toString().padStart(2,'0')}:` +
+      `${minutes.toString().padStart(2,'0')}:` +
+      `${seconds.toString().padStart(2,'0')}`;
+  }
 }
 setInterval(updateCountdown, 1000);
 
-// TEXTO FINAL (animación por palabra)
+// TEXTO FINAL ANIMADO INICIAL
 const finalMessage = 
 "Solo faltan horas para graduarnos, después de un año conviviendo juntos, compartiendo experiencias, les agradezco por su compañía y apoyo; les deseo lo mejor mañana.<br><br>- Fernando™";
 
@@ -249,7 +276,7 @@ function showFinalMessage() {
       span.textContent = word;
       span.style.animationDelay = `${index * 0.08}s`;
       box.appendChild(span);
-      box.append(" "); // espacio entre palabras
+      box.append(" ");
       index++;
     });
 
